@@ -2,22 +2,21 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "keyVaultName": {
-            "type": "string",
-            "minLength": 3,
-            "maxLength": 24,
-            "metadata": {
-                "description": "Specifies the name of the key vault."
-            }
-        },
         "appServiceName": {
             "type": "string",
             "metadata": {
                 "description": "Name of company or organization for certificate subject"
             }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Location where the resources will be deployed"
+            }
         }
     },
     "variables": {
+        "keyVaultName": "[concat('scepmanvlt',uniquestring(resourceGroup().id))]",
         "keys": [
             "Get",
             "List",
@@ -62,8 +61,8 @@
     "resources": [
         {
             "type": "Microsoft.KeyVault/vaults",
-            "name": "[parameters('keyVaultName')]",
-            "location": "[resourceGroup().location]",
+            "name": "[variables('keyVaultName')]",
+            "location": "[parameters('location')]",
             "apiVersion": "2019-09-01",
             "properties": {
                 "tenantId": "[subscription().tenantId]",

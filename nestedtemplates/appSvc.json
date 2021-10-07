@@ -13,15 +13,21 @@
             "metadata": {
                 "description": "Name of company or organization for certificate subject"
             }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Location where the resources will be deployed"
+            }
         }
     },
     
     "resources": [
         {
-            "apiVersion": "2019-08-01",
             "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2019-08-01",
             "name": "[parameters('AppServicePlanName')]",
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "sku": {
                 "Tier": "Standard",
                 "Name": "S1"
@@ -36,10 +42,8 @@
             "apiVersion": "2019-08-01",
             "type": "Microsoft.Web/sites",
             "name": "[parameters('appServiceName')]",
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "identity": {
-                "principalId": "",
-                "tenantId": "",
                 "type": "SystemAssigned"
             },
             "properties": {

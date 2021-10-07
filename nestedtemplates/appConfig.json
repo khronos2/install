@@ -26,13 +26,6 @@
                 "description": "Name of company or organization for certificate subject"
             }
         },
-        "license": {
-            "type": "string",
-            "defaultValue": "trial",
-            "metadata": {
-                "description": "License Key for SCEPman"
-            }
-        },
         "appRegistrationGuid": {
             "type": "string",
             "metadata": {
@@ -45,20 +38,34 @@
                 "description": "Secret of AAD app registration"
             }
         },
+        "_artifactsLocationSasToken": {
+            "type": "securestring",
+            "metadata": {
+                "description": "The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated. Use the defaultValue if the staging location is not secured."
+            }
+        },
         "_artifactsLocation": {
             "type": "string",
             "metadata": {
                 "description": "The base URI where artifacts required by this template are located including a trailing '/'"
-            },
-            "defaultValue": "[uri(deployment().properties.templatelink.uri,'Artifacts.zip')]"
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Location where the resources will be deployed"
+            }
         }
+    },
+        "variables": {
+        "artifacts": "[uri(parameters('_artifactsLocation'), concat('Artifacts.zip', parameters('_artifactsLocationSasToken')))]"
     },
     "resources": [
         {
             "apiVersion": "2019-08-01",
             "type": "Microsoft.Web/sites",
             "name": "[parameters('appServiceName')]",
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "properties": {
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('AppServicePlanName'))]",
                 "httpsOnly": false,
@@ -70,15 +77,11 @@
                     "appSettings": [
                         {
                             "name": "WEBSITE_RUN_FROM_PACKAGE",
-                            "value": "[parameters('_artifactsLocation')]"
+                            "value": "[variables('artifacts')]"
                         },
                         {
                             "name": "AppConfig:BaseUrl",
-                            "value": "[concat('https://',parameters('appServiceName'),'.azurewebsites.net')]"
-                        },
-                        {
-                            "name": "AppConfig:LicenseKey",
-                            "value": "[parameters('license')]"
+                            "value": "[parameters('appServiceName')]"
                         },
                         {
                             "name": "AppConfig:AuthConfig:ApplicationId",
@@ -91,14 +94,6 @@
                         {
                             "name": "AppConfig:AuthConfig:TenantName",
                             "value": "[subscription().tenantId]"
-                        },
-                        {
-                            "name": "AppConfig:UseRequestedKeyUsages",
-                            "value": "true"
-                        },
-						{
-                            "name": "AppConfig:DebugMode",
-                            "value": "false"
                         },
                         {
                             "name": "AppConfig:KeyVaultConfig:KeyVaultURL",
