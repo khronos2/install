@@ -64,7 +64,7 @@
             }
         }
     },
-        "variables": {
+    "variables": {
         "artifacts": "[uri(parameters('_artifactsLocation'), concat('Artifacts.zip', parameters('_artifactsLocationSasToken')))]"
     },
     "resources": [
