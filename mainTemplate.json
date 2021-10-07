@@ -8,6 +8,13 @@
                 "description": "Name of company or organization for certificate subject"
             }
         },
+        "license": {
+            "type": "string",
+            "defaultValue": "trial",
+            "metadata": {
+                "description": "License Key for SCEPman"
+            }
+        },
         "appRegistrationGuid": {
             "type": "string",
             "metadata": {
@@ -20,19 +27,19 @@
                 "description": "Secret of AAD app registration"
             }
         },
-      "_artifactsLocationSasToken": {
-          "type": "securestring",
-          "metadata": {
-              "description": "The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated. Use the defaultValue if the staging location is not secured."
-          },
-          "defaultValue": ""
-      },
+        "_artifactsLocationSasToken": {
+            "type": "securestring",
+            "metadata": {
+                "description": "The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated. Use the defaultValue if the staging location is not secured."
+            },
+            "defaultValue": ""
+        },
         "_artifactsLocation": {
             "type": "string",
             "metadata": {
                 "description": "The base URI where artifacts required by this template are located including a trailing '/'"
             },
-            "defaultValue": "[deployment().properties.templateLink.uri]" 
+            "defaultValue": "[deployment().properties.templateLink.uri]"
         },
         "location": {
             "type": "string",
@@ -147,6 +154,9 @@
                                     },
                                     "_artifactsLocation": {
                                         "value": "[parameters('_artifactsLocation')]"
+                                    },
+                                    "license": {
+                                        "value": "[parameters('license')]"
                                     },
                                     "location": {
                                         "value": "[parameters('location')]"
