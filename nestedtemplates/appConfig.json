@@ -74,7 +74,7 @@
                         },
                         {
                             "name": "AppConfig:BaseUrl",
-                            "value": "[concat('https://',parameters('appServiceName'),'.azurewebsites.net')]"
+                            "value": "[concat('https://',parameters('appServiceName'),'.azurewebsites.us')]"
                         },
                         {
                             "name": "AppConfig:LicenseKey",
